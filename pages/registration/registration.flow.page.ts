@@ -84,7 +84,10 @@ export class RegistrationPage extends BasePage {
     async timeout(pauseInMs: number) {
         await this.page.waitForTimeout(pauseInMs);
     }
-
+    //in case you are wondering why i handle 2 scenarios, by god, i was not able to understand the redirect logic
+    //I wanted to spend more time and intercept the requests, but im too sick to do that now. 
+    //ill check it during the weekend, as its interesting thing, that might have security exploit, so if i find something,
+    //regardless of the process, ill let you know.
     async registerANewUser({
         firstName,
         lastName,
@@ -104,7 +107,7 @@ export class RegistrationPage extends BasePage {
     }): Promise<void> {
         if (!this.randomEmail || !this.randomPassword) {
             await this.initializeUserData();
-          }
+        }
         // If first name is visible, we are likely in the first sign-up flow
         if (firstName && await this.firstNameInput.isVisible()) {
             console.log('---Onboarding flow SKIPPED!---');
@@ -113,6 +116,11 @@ export class RegistrationPage extends BasePage {
             await this.firstNameInput.fill(firstName);
             await this.lastNameInput.fill(lastName);
             await this.emailInput.fill(this.randomEmail);
+            //There are 2 bugs on the sign up page: (my subjective opinion, but maybe its a feature, dont knwo :) 
+            //1.When click on the Eye to show password, the password is not shown, but the password requirements are displayed.
+            //2.When enter password, the requirements ddl stays open, which prenvets manipulation of elements until click or any other event happens
+            //adding TAB to make the test pass, but essentially, i would remove the focus event when all requirements for password are fulfiled.
+            //that way we have validation (focus event until requrements fullfiled) and also can have automation test and not blocking components. 
             await this.passwordInput.fill(this.randomPassword);
             await this.page.keyboard.press('Tab');
             await this.companyNameInput.fill(companyName);
