@@ -19,6 +19,7 @@ export class Helpers {
     return Math.random().toString(36).substring(2, 10); // Example random string generator
   }
 
+  //this is not mine implementation, need to change it, but it works ok
   async generateRandomPassword(): Promise<string> {
     const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const lower = "abcdefghijklmnopqrstuvwxyz";
@@ -49,17 +50,5 @@ export class Helpers {
       randomString += characters[randomIndex];
     }
     return randomString;
-  }
-
-  // Returns the current timestamp in mm-dd-yy-T-HH-MM format (e.g., "02-07-23-T-12-34").
-  async generateRandomTimestamp(): Promise<string> {
-    const now = new Date();
-    const formattedTimestamp =
-      `${(now.getMonth() + 1).toString().padStart(2, '0')}-` +
-      `${now.getDate().toString().padStart(2, '0')}-` +
-      `${now.getFullYear().toString().slice(-2)}-T-` +
-      `${now.getHours().toString().padStart(2, '0')}-` +
-      `${now.getMinutes().toString().padStart(2, '0')}`;
-    return formattedTimestamp;
   }
 }

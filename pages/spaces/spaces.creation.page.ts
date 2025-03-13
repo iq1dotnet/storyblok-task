@@ -6,17 +6,44 @@ import path from 'path';
 export class SpacesCreationPage extends BasePage {
     readonly page: Page;
     private helpers: Helpers;
-    readonly createSpaceBotton: Locator;
-
+    private spaceName: string;
+    readonly addSpaceButton: Locator;
+    readonly spaceNameText: Locator;
+    readonly continueButton: Locator;
+    readonly createSpaceButton: Locator;
+    
     constructor(page: Page) {
         super(page, process.env.LOGIN_URL);
         this.page = page;
         this.helpers = new Helpers(page);
-        this.createSpaceBotton = this.page.getByTestId('create-new-space-button');
+        this.spaceName = '';
+        this.addSpaceButton = this.page.getByTestId('create-new-space-button');
+        this.spaceNameText = this.page.getByRole('textbox', { name: 'Space name *' });
+        this.continueButton = this.page.getByRole('button', { name: 'Continue' });
+        this.createSpaceButton =  this.page.getByRole('button', { name: 'Create a Space' });
     }
 
     async goTo(): Promise<void> {
         await this.page.goto(this.url!);
+    }
+
+    async initializeUserData(): Promise<void> {
+        this.spaceName = await this.helpers.generateRandomString();
+    }
+
+    async createNewSpace(): Promise<void>{
+        if (!this.spaceName) {
+            await this.initializeUserData();
+          }
+        await this.addSpaceButton.click();
+        await expect(this.page.getByTestId('plan-card-0')).toBeVisible();
+        await this.continueButton.click();
+        await this.spaceNameText.fill(this.spaceName); //add random space name
+        //wont implement this now
+        // await page.getByTestId('sb-select-inner-search-input').click()
+        // await page.getByTestId('sb-select-list-item__0').click();
+        await this.createSpaceButton.click();
+        await expect(this.page.getByRole('heading', { name: this.spaceName })).toBeVisible(); //add random space name
     }
 
 }

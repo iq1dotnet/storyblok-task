@@ -16,7 +16,7 @@ test.describe('Spaces: ', () => {
   });
 
   test('Add new space', async (page) => {
-   spacesPage.createSpaceBotton.click();
+   await spacesPage.createNewSpace();
   })
 });
 
