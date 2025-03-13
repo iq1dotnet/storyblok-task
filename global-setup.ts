@@ -1,5 +1,5 @@
 import { chromium, FullConfig } from '@playwright/test';
-import { RegistrationPage } from '../interview/pages/registration/registration.flow.page';
+import { RegistrationPage } from './pages/registration/registration.flow.page';
 import path from 'path';
 import * as dotenv from 'dotenv';
 dotenv.config();
