@@ -1,0 +1,39 @@
+name: Playwright Test
+
+on:
+  push:
+    branches:
+      - main  # Run on push to main branch
+  pull_request:
+    branches:
+      - main  # Run on PR to main branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Use Ubuntu as the environment
+
+    steps:
+    # Checkout the repository code
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'  # You can change this to any version compatible with your project
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        npm install
+
+    # Install required dependencies for running Playwright in CI
+    - name: Install Playwright Browsers
+      run: |
+        npx playwright install --with-deps
+
+    # Run the tests using npm or yarn
+    - name: Run Playwright tests
+      run: |
+        npx playwright test
