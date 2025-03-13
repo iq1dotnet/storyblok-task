@@ -135,8 +135,8 @@ export class RegistrationPage extends BasePage {
             await this.finishRegistrationButton.click();
 
             // Wait for redirection and verify URL
-            this.timeout(5000);
-            await expect(this.page).toHaveURL(/.*get-started/);
+            this.timeout(2000);
+            await expect(this.page).toHaveURL(/.*\/signup/);
         }
         else {
             console.log('---Onboarding flow started!---');
